@@ -466,9 +466,11 @@ async function loadDashboard() {
     if (!pending.success) {
       throw new Error(pending.message || "Unable to load new requests.");
     }
+
     if (!approved.success) {
       throw new Error(approved.message || "Unable to load approved records.");
     }
+
     if (!rejected.success) {
       throw new Error(rejected.message || "Unable to load rejected records.");
     }
@@ -542,8 +544,10 @@ function renderCurrentTab() {
 
 function makeElement(tag, className, value) {
   const element = document.createElement(tag);
+
   if (className) element.className = className;
   if (value !== undefined) element.textContent = value;
+
   return element;
 }
 
@@ -569,8 +573,13 @@ function renderPayments(payments, heading, type) {
     );
 
     const top = makeElement("div", "card-top");
+
     top.appendChild(
-      makeElement("div", "person-name", payment.name || "Unknown User")
+      makeElement(
+        "div",
+        "person-name",
+        payment.name || "Unknown User"
+      )
     );
 
     const status = makeElement(
@@ -583,29 +592,49 @@ function renderPayments(payments, heading, type) {
     card.appendChild(top);
 
     card.appendChild(makeElement(
-      "div", "detail", "Gmail: " + (payment.email || "-")
+      "div",
+      "detail",
+      "Gmail: " + (payment.email || "-")
     ));
 
     card.appendChild(makeElement(
-      "div", "detail", "UTR: " + (payment.utr || "-")
+      "div",
+      "detail",
+      "UTR: " + (payment.utr || "-")
     ));
 
     card.appendChild(makeElement(
-      "div", "detail", "Plan: " + (payment.plan || "-")
+      "div",
+      "detail",
+      "Plan: " + (payment.plan || "-")
     ));
 
     card.appendChild(makeElement(
-      "div", "detail", "Amount: ₹" + (payment.amount ?? "-")
+      "div",
+      "detail",
+      "Amount: ₹" + (payment.amount ?? "-")
     ));
 
     if (type === "pending") {
       const actions = makeElement("div", "card-actions");
 
-      const approve = makeElement("button", "action approve", "✓ APPROVE");
-      approve.onclick = () => processRequest(payment.utr, "approve", approve, reject);
+      const approve = makeElement(
+        "button",
+        "action approve",
+        "✓ APPROVE"
+      );
 
-      const reject = makeElement("button", "action reject", "✕ REJECT");
-      reject.onclick = () => processRequest(payment.utr, "reject", approve, reject);
+      approve.onclick = () =>
+        processRequest(payment.utr, "approve", approve, reject);
+
+      const reject = makeElement(
+        "button",
+        "action reject",
+        "✕ REJECT"
+      );
+
+      reject.onclick = () =>
+        processRequest(payment.utr, "reject", approve, reject);
 
       actions.append(approve, reject);
       card.appendChild(actions);
@@ -643,9 +672,10 @@ async function processRequest(utr, decision, approveButton, rejectButton) {
   message.textContent = "Processing request...";
 
   try {
+    // Backend expects "Approved" or "Rejected"
     const result = await callBackend("processPayment", {
       utr,
-      decision
+      decision: isApprove ? "Approved" : "Rejected"
     });
 
     if (!result.success) {
@@ -653,6 +683,7 @@ async function processRequest(utr, decision, approveButton, rejectButton) {
     }
 
     message.className = "message success";
+
     message.textContent = isApprove
       ? "Payment approved. Membership has been processed."
       : "Payment rejected. No membership was activated.";
@@ -689,6 +720,7 @@ function logout() {
   document.querySelectorAll(".tab").forEach(item => {
     item.classList.remove("active");
   });
+
   document.querySelector(".tab").classList.add("active");
 }
 
@@ -701,5 +733,6 @@ window.addEventListener("load", () => {
   restoreSession();
 });
 </script>
+
 </body>
 </html>
