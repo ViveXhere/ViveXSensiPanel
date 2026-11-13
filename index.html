@@ -17,31 +17,39 @@
   --yellow:#f5b942;
 }
 * { box-sizing:border-box; }
+
 body {
   margin:0;
   background:var(--bg);
   color:#fff;
   font-family:Arial,sans-serif;
 }
+
 button { font:inherit; cursor:pointer; }
+
 .container {
   max-width:600px;
   min-height:100vh;
   padding:20px 15px 35px;
   margin:auto;
 }
+
 .hidden { display:none!important; }
+
 .header {
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:10px 0 22px;
 }
+
 .logo {
   font-size:23px;
   font-weight:900;
 }
+
 .logo span { color:var(--red); }
+
 .admin-label {
   color:var(--red);
   border:1px solid #64232a;
@@ -51,6 +59,7 @@ button { font:inherit; cursor:pointer; }
   font-size:10px;
   font-weight:bold;
 }
+
 .login-box {
   background:var(--panel);
   border:1px solid var(--line);
@@ -59,27 +68,33 @@ button { font:inherit; cursor:pointer; }
   text-align:center;
   margin-top:60px;
 }
+
 .login-box h2 { margin:0 0 10px; }
+
 .muted {
   color:var(--muted);
   font-size:13px;
   line-height:1.6;
 }
+
 .google-area {
   display:flex;
   justify-content:center;
   margin-top:20px;
 }
+
 .dashboard-top {
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin:8px 0 18px;
 }
+
 .dashboard-top h2 {
   font-size:20px;
   margin:0;
 }
+
 .logout {
   background:#242424;
   border:1px solid var(--line);
@@ -88,50 +103,35 @@ button { font:inherit; cursor:pointer; }
   padding:9px 12px;
   font-size:12px;
 }
+
 .stats {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
+  grid-template-columns:1fr;
   margin-bottom:20px;
 }
+
 .stat {
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:10px;
-  padding:13px 8px;
+  padding:16px;
 }
+
 .stat small {
   display:block;
   color:var(--muted);
-  font-size:10px;
+  font-size:11px;
   margin-bottom:9px;
 }
-.stat strong { font-size:22px; }
-.tabs {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-bottom:18px;
-}
-.tab {
-  background:#151515;
-  border:1px solid var(--line);
-  color:#aaa;
-  border-radius:8px;
-  padding:12px 4px;
-  font-size:11px;
-  font-weight:bold;
-}
-.tab.active {
-  background:#260d10;
-  border-color:var(--red);
-  color:white;
-}
+
+.stat strong { font-size:26px; }
+
 .section-heading {
   font-size:16px;
   font-weight:800;
   margin:18px 0 13px;
 }
+
 .request-card {
   background:var(--panel);
   border:1px solid var(--line);
@@ -140,8 +140,7 @@ button { font:inherit; cursor:pointer; }
   padding:15px;
   margin-bottom:12px;
 }
-.request-card.approved { border-left-color:var(--green); }
-.request-card.rejected { border-left-color:var(--red); }
+
 .card-top {
   display:flex;
   justify-content:space-between;
@@ -149,11 +148,13 @@ button { font:inherit; cursor:pointer; }
   gap:10px;
   margin-bottom:14px;
 }
+
 .person-name {
   font-size:15px;
   font-weight:800;
   overflow-wrap:anywhere;
 }
+
 .status {
   font-size:9px;
   font-weight:bold;
@@ -163,30 +164,26 @@ button { font:inherit; cursor:pointer; }
   color:var(--yellow);
   flex-shrink:0;
 }
-.status.approved {
-  color:var(--green);
-  background:#10271c;
-}
-.status.rejected {
-  color:#ff626c;
-  background:#301115;
-}
+
 .detail {
   margin:9px 0;
   font-size:12px;
   color:#bbb;
   overflow-wrap:anywhere;
 }
+
 .detail b {
   color:#fff;
   font-weight:600;
 }
+
 .card-actions {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
   margin-top:15px;
 }
+
 .action {
   border:0;
   border-radius:7px;
@@ -195,12 +192,15 @@ button { font:inherit; cursor:pointer; }
   font-weight:800;
   color:white;
 }
+
 .approve { background:#16894e; }
 .reject { background:#b82230; }
+
 .action:disabled {
   opacity:.45;
   cursor:not-allowed;
 }
+
 .empty {
   background:var(--panel);
   border:1px dashed #333;
@@ -210,14 +210,17 @@ button { font:inherit; cursor:pointer; }
   color:var(--muted);
   font-size:13px;
 }
+
 .message {
   font-size:12px;
   line-height:1.6;
   margin:12px 0;
   text-align:center;
 }
+
 .error { color:#ff646c; }
 .success { color:var(--green); }
+
 .refresh {
   width:100%;
   padding:12px;
@@ -229,6 +232,7 @@ button { font:inherit; cursor:pointer; }
   font-size:12px;
   font-weight:bold;
 }
+
 .footer {
   text-align:center;
   color:#555;
@@ -252,9 +256,11 @@ button { font:inherit; cursor:pointer; }
     <p class="muted">
       Sign in using an authorized Google Admin account.
     </p>
+
     <div class="google-area">
       <div id="googleButton"></div>
     </div>
+
     <div id="loginMessage" class="message"></div>
   </section>
 
@@ -271,26 +277,6 @@ button { font:inherit; cursor:pointer; }
         <small>NEW REQUESTS</small>
         <strong id="pendingCount">0</strong>
       </div>
-      <div class="stat">
-        <small>APPROVED</small>
-        <strong id="approvedCount">0</strong>
-      </div>
-      <div class="stat">
-        <small>REJECTED</small>
-        <strong id="rejectedCount">0</strong>
-      </div>
-    </div>
-
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('pending',this)">
-        NEW REQUESTS
-      </button>
-      <button class="tab" onclick="showTab('approved',this)">
-        APPROVED
-      </button>
-      <button class="tab" onclick="showTab('rejected',this)">
-        REJECTED
-      </button>
     </div>
 
     <button class="refresh" onclick="loadDashboard()">
@@ -309,6 +295,7 @@ button { font:inherit; cursor:pointer; }
 </div>
 
 <script>
+
 /* ===================================
    CONFIG
 =================================== */
@@ -322,17 +309,15 @@ const CONFIG = {
 };
 
 let idToken = "";
-let currentTab = "pending";
-
 let pendingPayments = [];
-let approvedPayments = [];
-let rejectedPayments = [];
+
 
 /* ===================================
    BACKEND
 =================================== */
 
 async function callBackend(action, extra = {}) {
+
   const response = await fetch(CONFIG.BACKEND_URL, {
     method: "POST",
     headers: {
@@ -352,11 +337,13 @@ async function callBackend(action, extra = {}) {
   return await response.json();
 }
 
+
 /* ===================================
    GOOGLE LOGIN
 =================================== */
 
 function initializeGoogle() {
+
   if (!window.google || !google.accounts) {
     setTimeout(initializeGoogle, 300);
     return;
@@ -380,14 +367,18 @@ function initializeGoogle() {
   );
 }
 
+
 async function handleLogin(response) {
+
   idToken = response.credential;
 
   const message = document.getElementById("loginMessage");
+
   message.className = "message";
   message.textContent = "Verifying admin account...";
 
   try {
+
     const result = await callBackend("adminLogin");
 
     if (!result.success) {
@@ -402,21 +393,27 @@ async function handleLogin(response) {
     await loadDashboard();
 
   } catch (error) {
+
     idToken = "";
+
     message.className = "message error";
     message.textContent = error.message;
   }
 }
+
 
 /* ===================================
    RESTORE SESSION
 =================================== */
 
 async function restoreSession() {
+
   const token = sessionStorage.getItem("vivex_admin_token");
+
   if (!token) return;
 
   try {
+
     const payload = JSON.parse(
       atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))
     );
@@ -440,136 +437,110 @@ async function restoreSession() {
     await loadDashboard();
 
   } catch (error) {
+
     idToken = "";
     sessionStorage.removeItem("vivex_admin_token");
   }
 }
 
+
 /* ===================================
-   LOAD ALL DATA
+   LOAD PENDING DATA ONLY
 =================================== */
 
 async function loadDashboard() {
+
   const content = document.getElementById("content");
   const message = document.getElementById("actionMessage");
 
   message.textContent = "";
-  content.innerHTML = '<div class="empty">Loading data...</div>';
+
+  content.innerHTML =
+    '<div class="empty">Loading requests...</div>';
 
   try {
-    const [pending, approved, rejected] = await Promise.all([
-      callBackend("getPendingPayments"),
-      callBackend("getPaymentHistory", { status: "Approved" }),
-      callBackend("getPaymentHistory", { status: "Rejected" })
-    ]);
+
+    const pending = await callBackend("getPendingPayments");
 
     if (!pending.success) {
-      throw new Error(pending.message || "Unable to load new requests.");
-    }
-
-    if (!approved.success) {
-      throw new Error(approved.message || "Unable to load approved records.");
-    }
-
-    if (!rejected.success) {
-      throw new Error(rejected.message || "Unable to load rejected records.");
+      throw new Error(
+        pending.message || "Unable to load new requests."
+      );
     }
 
     pendingPayments = pending.payments || [];
-    approvedPayments = approved.payments || [];
-    rejectedPayments = rejected.payments || [];
 
     document.getElementById("pendingCount").textContent =
       pendingPayments.length;
 
-    document.getElementById("approvedCount").textContent =
-      approvedPayments.length;
-
-    document.getElementById("rejectedCount").textContent =
-      rejectedPayments.length;
-
-    renderCurrentTab();
+    renderPayments();
 
   } catch (error) {
+
     content.innerHTML = "";
+
     message.className = "message error";
     message.textContent = error.message;
   }
 }
 
-/* ===================================
-   TABS
-=================================== */
-
-function showTab(tab, button) {
-  currentTab = tab;
-
-  document.querySelectorAll(".tab").forEach(item => {
-    item.classList.remove("active");
-  });
-
-  button.classList.add("active");
-  renderCurrentTab();
-}
-
-function renderCurrentTab() {
-  if (currentTab === "pending") {
-    renderPayments(
-      pendingPayments,
-      "New Payment Requests",
-      "pending"
-    );
-  }
-
-  if (currentTab === "approved") {
-    renderPayments(
-      approvedPayments,
-      "Approved Payments",
-      "approved"
-    );
-  }
-
-  if (currentTab === "rejected") {
-    renderPayments(
-      rejectedPayments,
-      "Rejected Payments",
-      "rejected"
-    );
-  }
-}
 
 /* ===================================
-   SAFE CARD RENDERING
+   SAFE ELEMENT CREATION
 =================================== */
 
 function makeElement(tag, className, value) {
+
   const element = document.createElement(tag);
 
-  if (className) element.className = className;
-  if (value !== undefined) element.textContent = value;
+  if (className) {
+    element.className = className;
+  }
+
+  if (value !== undefined) {
+    element.textContent = value;
+  }
 
   return element;
 }
 
-function renderPayments(payments, heading, type) {
+
+/* ===================================
+   RENDER PENDING REQUESTS
+=================================== */
+
+function renderPayments() {
+
   const content = document.getElementById("content");
+
   content.replaceChildren();
 
   content.appendChild(
-    makeElement("div", "section-heading", heading)
+    makeElement(
+      "div",
+      "section-heading",
+      "New Payment Requests"
+    )
   );
 
-  if (!payments.length) {
+  if (!pendingPayments.length) {
+
     content.appendChild(
-      makeElement("div", "empty", "No records found.")
+      makeElement(
+        "div",
+        "empty",
+        "No new payment requests."
+      )
     );
+
     return;
   }
 
-  payments.forEach(payment => {
+  pendingPayments.forEach(payment => {
+
     const card = makeElement(
       "div",
-      "request-card " + type
+      "request-card"
     );
 
     const top = makeElement("div", "card-top");
@@ -582,13 +553,14 @@ function renderPayments(payments, heading, type) {
       )
     );
 
-    const status = makeElement(
-      "span",
-      "status " + type,
-      type === "pending" ? "NEW REQUEST" : type.toUpperCase()
+    top.appendChild(
+      makeElement(
+        "span",
+        "status",
+        "NEW REQUEST"
+      )
     );
 
-    top.appendChild(status);
     card.appendChild(top);
 
     card.appendChild(makeElement(
@@ -615,40 +587,49 @@ function renderPayments(payments, heading, type) {
       "Amount: ₹" + (payment.amount ?? "-")
     ));
 
-    if (type === "pending") {
-      const actions = makeElement("div", "card-actions");
+    const actions = makeElement(
+      "div",
+      "card-actions"
+    );
 
-      const approve = makeElement(
-        "button",
-        "action approve",
-        "✓ APPROVE"
-      );
+    const approve = makeElement(
+      "button",
+      "action approve",
+      "✓ APPROVE"
+    );
 
-      approve.onclick = () =>
-        processRequest(payment.utr, "approve", approve, reject);
+    const reject = makeElement(
+      "button",
+      "action reject",
+      "✕ REJECT"
+    );
 
-      const reject = makeElement(
-        "button",
-        "action reject",
-        "✕ REJECT"
-      );
+    approve.onclick = () =>
+      processRequest(payment.utr, "approve", approve, reject);
 
-      reject.onclick = () =>
-        processRequest(payment.utr, "reject", approve, reject);
+    reject.onclick = () =>
+      processRequest(payment.utr, "reject", approve, reject);
 
-      actions.append(approve, reject);
-      card.appendChild(actions);
-    }
+    actions.append(approve, reject);
+
+    card.appendChild(actions);
 
     content.appendChild(card);
   });
 }
 
+
 /* ===================================
    APPROVE / REJECT
 =================================== */
 
-async function processRequest(utr, decision, approveButton, rejectButton) {
+async function processRequest(
+  utr,
+  decision,
+  approveButton,
+  rejectButton
+) {
+
   if (!utr) {
     alert("UTR is missing.");
     return;
@@ -668,11 +649,12 @@ async function processRequest(utr, decision, approveButton, rejectButton) {
   rejectButton.disabled = true;
 
   const message = document.getElementById("actionMessage");
+
   message.className = "message";
   message.textContent = "Processing request...";
 
   try {
-    // Backend expects "Approved" or "Rejected"
+
     const result = await callBackend("processPayment", {
       utr,
       decision: isApprove ? "Approved" : "Rejected"
@@ -691,6 +673,7 @@ async function processRequest(utr, decision, approveButton, rejectButton) {
     await loadDashboard();
 
   } catch (error) {
+
     approveButton.disabled = false;
     rejectButton.disabled = false;
 
@@ -699,40 +682,38 @@ async function processRequest(utr, decision, approveButton, rejectButton) {
   }
 }
 
+
 /* ===================================
    LOGOUT
 =================================== */
 
 function logout() {
-  sessionStorage.removeItem("vivex_admin_token");
-  idToken = "";
 
+  sessionStorage.removeItem("vivex_admin_token");
+
+  idToken = "";
   pendingPayments = [];
-  approvedPayments = [];
-  rejectedPayments = [];
 
   document.getElementById("dashboard").classList.add("hidden");
   document.getElementById("loginPage").classList.remove("hidden");
   document.getElementById("loginMessage").textContent = "";
 
-  currentTab = "pending";
+  document.getElementById("pendingCount").textContent = "0";
 
-  document.querySelectorAll(".tab").forEach(item => {
-    item.classList.remove("active");
-  });
-
-  document.querySelector(".tab").classList.add("active");
 }
+
 
 /* ===================================
    START
 =================================== */
 
 window.addEventListener("load", () => {
+
   initializeGoogle();
   restoreSession();
-});
-</script>
 
+});
+
+</script>
 </body>
 </html>
